@@ -38,19 +38,20 @@ namespace MindMangler
         Console.WriteLine("Please use less arguments");
         return;
       }
-      StreamReader streamReader = new StreamReader(filePath);
+      
       string codeToRun;
       try
       {
+        StreamReader streamReader = new StreamReader(filePath);
         codeToRun = streamReader.ReadToEnd();
       }
       catch (Exception e)
       {
         Console.WriteLine("That's not a valid path.");
-        throw;
+        Environment.Exit(1);
+        return;
       } // Read the passed in file to a variable.
-      
-      Console.Write($"Interpreting '{filePath}' as a brainfuck file.\nPress enter to begin execution"); // Tell the user which file will be interpreted.
+      Console.WriteLine($"Interpreting '{filePath}' as a brainfuck file.\nPress enter to begin execution"); // Tell the user which file will be interpreted.
       Console.ReadLine();
       Console.WriteLine();
       
