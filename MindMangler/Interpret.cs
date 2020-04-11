@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
 
 namespace MindMangler
 {
@@ -98,7 +98,9 @@ namespace MindMangler
 						memoryBlock[pointer]--;
 						break;
 					case ".":
-						Console.Write(Convert.ToChar(memoryBlock[pointer]).ToString()); // get Char from keycode and print it
+						uint asciiKeycode = Convert.ToChar(memoryBlock[pointer]); // get keycode
+						uint unicodeKeycode = Convert.ToUInt32((Encoding.Convert(Encoding.ASCII, Encoding.Unicode, new byte[]{Convert.ToByte(asciiKeycode)}))[0]);
+						Console.Write(Convert.ToChar(unicodeKeycode).ToString()); // print key
 						break;
 					case ",":
 						string character = Console.ReadKey().ToString();
