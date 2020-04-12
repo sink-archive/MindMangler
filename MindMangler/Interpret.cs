@@ -1,15 +1,15 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace MindMangler
 {
-	internal partial class Program
+	public partial class Program
 	{
-		public static void InterpreterMain(string code, bool verboseOn)
+		public static void InterpreterMain(string code, bool verboseOn = false)
 		{
-			List<uint> memoryBlock = new List<uint>(); // Brainfuck memory cells
+			List<int> memoryBlock = new List<int>(); // Brainfuck memory cells
 
 			for (int i = 0; i < 30000; i++)
 			{
@@ -30,7 +30,7 @@ namespace MindMangler
 				if (looping)
 				{
 					int loopCounter = 0;
-					while (memoryBlock[pointer] > 0)
+					while (memoryBlock[pointer] > 0 | loopCounter < loopCommands.Count)
 					{
 						if (loopCounter == loopCommands.Count)
 						{
@@ -64,16 +64,16 @@ namespace MindMangler
                                 Console.Write(Convert.ToChar(memoryBlock[pointer]).ToString()); // print key
                                 break;
                             case ",":
-                                string character = Console.ReadKey().KeyChar.ToString();
-                                if (!char.TryParse(character, out char pressedKey))
-                                {
-                                    Console.WriteLine("Invalid Input.");
-                                    Environment.Exit(2);
-                                    return;
-                                }
-
-                                memoryBlock[pointer] = Convert.ToUInt16(pressedKey); // Get keycode of entered character and store it.
-                                break;
+	                            string character = Console.ReadKey().KeyChar.ToString();
+	                            if (!char.TryParse(character, out char pressedKey))
+	                            {
+		                            Console.WriteLine("Invalid Input.");
+		                            Environment.Exit(2);
+		                            return;
+	                            }
+						
+	                            memoryBlock[pointer] = Convert.ToUInt16(pressedKey); // Get keycode of entered character and store it.
+	                            break;
                         }
 					}
 					looping = false;
