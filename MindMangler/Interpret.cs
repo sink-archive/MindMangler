@@ -38,36 +38,43 @@ namespace MindMangler
 						} // Avoid out of range exception
 						switch (loopCommands[loopCounter++].ToString())
 						{
-							default:
-								if (verboseOn)
-								{
-									Console.WriteLine(
-										$"character #{counter.ToString()} ({commands[counter].ToString()}) is not a Brainfuck instruction.");
-								} // Log non-instruction characters.
+                            default:
+                                if (verboseOn)
+                                {
+                                    if (char.IsWhiteSpace(commands[counter - 1]))
+                                    {
+                                        Console.WriteLine($"Skipped character #{(counter - 1).ToString()}: Is whitespace");
+                                    }
+                                    Console.WriteLine($"character #{(counter - 1).ToString()} ({commands[counter].ToString()}) is not a Brainfuck instruction.");
+                                } // Log non-instruction characters.
+                                break;
+                            case ">":
+                                pointer++;
+                                break;
+                            case "<":
+                                pointer--;
+                                break;
+                            case "+":
+                                memoryBlock[pointer]++;
+                                break;
+                            case "-":
+                                memoryBlock[pointer]--;
+                                break;
+                            case ".":
+                                Console.Write(Convert.ToChar(memoryBlock[pointer]).ToString()); // print key
+                                break;
+                            case ",":
+                                string character = Console.ReadKey().KeyChar.ToString();
+                                if (!char.TryParse(character, out char pressedKey))
+                                {
+                                    Console.WriteLine("Invalid Input.");
+                                    Environment.Exit(2);
+                                    return;
+                                }
 
-								break;
-							case ">":
-								pointer++;
-								break;
-							case "<":
-								pointer--;
-								break;
-							case "+":
-								memoryBlock[pointer]++;
-								break;
-							case "-":
-								memoryBlock[pointer]--;
-								break;
-							case ".":
-								Console.Write(Convert.ToChar(memoryBlock[pointer])
-									.ToString()); // get Char from keycode and print it
-								break;
-							case ",":
-								memoryBlock[pointer] =
-									Convert.ToUInt32(Console.ReadKey()
-										.KeyChar); // Get keycode of entered character and store it.
-								break;
-						}
+                                memoryBlock[pointer] = Convert.ToUInt16(pressedKey); // Get keycode of entered character and store it.
+                                break;
+                        }
 					}
 					looping = false;
 					counter += loopCommands.Count + 1;
@@ -98,13 +105,16 @@ namespace MindMangler
 						memoryBlock[pointer]--;
 						break;
 					case ".":
-						uint asciiKeycode = Convert.ToChar(memoryBlock[pointer]); // get keycode
-						uint unicodeKeycode = Convert.ToUInt32((Encoding.Convert(Encoding.ASCII, Encoding.Unicode, new byte[]{Convert.ToByte(asciiKeycode)}))[0]);
-						Console.Write(Convert.ToChar(unicodeKeycode).ToString()); // print key
+						Console.Write(Convert.ToChar(memoryBlock[pointer]).ToString()); // print key
 						break;
 					case ",":
-						string character = Console.ReadKey().ToString();
-						char pressedKey = char.Parse(character);
+						string character = Console.ReadKey().KeyChar.ToString();
+                        if (!char.TryParse(character, out char pressedKey))
+                        {
+                            Console.WriteLine("Invalid Input.");
+                            Environment.Exit(2);
+                            return;
+                        }
 						
 						memoryBlock[pointer] = Convert.ToUInt16(pressedKey); // Get keycode of entered character and store it.
 						break;

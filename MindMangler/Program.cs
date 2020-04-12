@@ -14,7 +14,7 @@ namespace MindMangler
       string filePath;
       
       Console.WriteLine("MindMangler by Cain Atkinson. (https://cainy-a.github.io)\nA Brainfuck interpreter written in C#");
-      if (args.Length == 0)
+      if (args.Length == 0 | (args.Length == 1 && args[0] == "-v"))
       {
         Console.WriteLine("Please type the path to a file containing brainfuck instructions.");
         filePath = Console.ReadLine();
